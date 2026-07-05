@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoSmart – Smart Waste Management</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#home" class="nav-logo">
+      <span class="logo-leaf">🌿</span>
+      <span>EcoSmart</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#report">Report Issue</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#awareness">Awareness</a>
+      <a href="#dashboard">Dashboard</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">
+        <span class="toggle-icon">🌙</span>
+      </button>
+      <a href="#report" class="btn-primary nav-cta">Report Now</a>
+    </div>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMobile()">Home</a>
+    <a href="#report" onclick="closeMobile()">Report Issue</a>
+    <a href="#schedule" onclick="closeMobile()">Schedule</a>
+    <a href="#awareness" onclick="closeMobile()">Awareness</a>
+    <a href="#dashboard" onclick="closeMobile()">Dashboard</a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Smart Waste Management · Pune, India
+    </div>
+    <h1 class="hero-title">
+      Clean Cities.<br/>
+      <span class="title-accent">Smarter Waste.</span><br/>
+      Better Tomorrow.
+    </h1>
+    <p class="hero-sub">
+      Report overflowing bins, schedule pickups, and track waste collection
+      in real-time. Together we build a cleaner, greener community.
+    </p>
+    <div class="hero-actions">
+      <a href="#report" class="btn-primary btn-lg">
+        <span>Report an Issue</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#schedule" class="btn-ghost btn-lg">View Schedule</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="stat-n">142</span><span>Bins Tracked</span></div>
+      <div class="stat-divider"></div>
+      <div class="hero-stat"><span class="stat-n">98%</span><span>Pickup Rate</span></div>
+      <div class="stat-divider"></div>
+      <div class="hero-stat"><span class="stat-n">24h</span><span>Response Time</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="bin-card">
+      <div class="bin-icon">🗑️</div>
+      <div class="bin-info">
+        <span class="bin-label">Sector 14, Pimpri</span>
+        <div class="bin-bar"><div class="bin-fill" style="width:72%"></div></div>
+        <span class="bin-pct">72% Full</span>
+      </div>
+    </div>
+    <div class="bin-card bin-card-2">
+      <div class="bin-icon">♻️</div>
+      <div class="bin-info">
+        <span class="bin-label">MG Road, Chinchwad</span>
+        <div class="bin-bar"><div class="bin-fill green" style="width:30%"></div></div>
+        <span class="bin-pct">30% Full</span>
+      </div>
+    </div>
+    <div class="floating-chip chip-1">✅ Pickup Scheduled</div>
+    <div class="floating-chip chip-2">🚛 Truck En Route</div>
+  </div>
+</section>
+
+<!-- ===== REPORT ISSUE ===== -->
+<section class="section report-section" id="report">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Report an Issue</span>
+      <h2>Something Wrong? <span class="accent">Tell Us.</span></h2>
+      <p>Help us keep the city clean by reporting waste issues in your area.</p>
+    </div>
+    <div class="form-card">
+      <form id="reportForm" class="report-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Arjun Sharma" required />
+            <span class="field-error" id="nameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="location">Location / Area</label>
+            <input type="text" id="location" name="location" placeholder="e.g. Sector 7, Pimpri" required />
+            <span class="field-error" id="locationError"></span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="issueType">Issue Type</label>
+            <select id="issueType" name="issue_type" required>
+              <option value="" disabled selected>Select an issue…</option>
+              <option value="Overflow">🗑️ Bin Overflow</option>
+              <option value="Missed Pickup">🚛 Missed Pickup</option>
+              <option value="Illegal Dumping">⚠️ Illegal Dumping</option>
+              <option value="Other">📋 Other</option>
+            </select>
+            <span class="field-error" id="issueError"></span>
+          </div>
+        </div>
+        <div class="form-group full-width">
+          <label for="description">Description <span class="opt">(optional)</span></label>
+          <textarea id="description" name="description" rows="3" placeholder="Describe the issue in a few words…"></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-submit" id="submitBtn">
+          <span class="btn-text">Submit Report</span>
+          <span class="btn-loader hidden">⏳ Submitting…</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUCCESS POPUP ===== -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-card">
+    <div class="popup-icon">✅</div>
+    <h3>Report Submitted!</h3>
+    <p>Thank you for helping keep our city clean. Our team will respond within 24 hours.</p>
+    <div class="popup-id" id="popupId"></div>
+    <button class="btn-primary" onclick="closePopup()">Got it!</button>
+  </div>
+</div>
+
+<!-- ===== SCHEDULE ===== -->
+<section class="section schedule-section" id="schedule">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Collection Schedule</span>
+      <h2>Weekly Pickup <span class="accent">Timetable</span></h2>
+      <p>Find out when waste collection happens in your zone.</p>
+    </div>
+    <div class="schedule-grid">
+      <div class="schedule-card">
+        <div class="sch-day">Monday</div>
+        <div class="sch-zone">Zone A – Pimpri</div>
+        <div class="sch-time">🕖 6:30 AM – 9:00 AM</div>
+        <div class="sch-type wet">Wet Waste</div>
+      </div>
+      <div class="schedule-card">
+        <div class="sch-day">Tuesday</div>
+        <div class="sch-zone">Zone B – Chinchwad</div>
+        <div class="sch-time">🕖 7:00 AM – 10:00 AM</div>
+        <div class="sch-type dry">Dry Waste</div>
+      </div>
+      <div class="schedule-card today-card">
+        <div class="today-badge">Today</div>
+        <div class="sch-day">Wednesday</div>
+        <div class="sch-zone">Zone C – Akurdi</div>
+        <div class="sch-time">🕖 6:00 AM – 8:30 AM</div>
+        <div class="sch-type both">Both</div>
+      </div>
+      <div class="schedule-card">
+        <div class="sch-day">Thursday</div>
+        <div class="sch-zone">Zone D – Nigdi</div>
+        <div class="sch-time">🕗 7:30 AM – 10:30 AM</div>
+        <div class="sch-type wet">Wet Waste</div>
+      </div>
+      <div class="schedule-card">
+        <div class="sch-day">Friday</div>
+        <div class="sch-zone">Zone A & B</div>
+        <div class="sch-time">🕕 5:30 AM – 8:00 AM</div>
+        <div class="sch-type dry">Dry Waste</div>
+      </div>
+      <div class="schedule-card">
+        <div class="sch-day">Saturday</div>
+        <div class="sch-zone">All Zones</div>
+        <div class="sch-time">🕗 7:00 AM – 12:00 PM</div>
+        <div class="sch-type both">Both</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AWARENESS ===== -->
+<section class="section awareness-section" id="awareness">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Waste Awareness</span>
+      <h2>Know Your <span class="accent">Waste</span></h2>
+      <p>Proper segregation is the first step towards a cleaner planet.</p>
+    </div>
+    <div class="awareness-grid">
+      <div class="awareness-card wet-card">
+        <div class="aw-emoji">💧</div>
+        <h3>Wet Waste</h3>
+        <p class="aw-desc">Biodegradable waste that decomposes naturally.</p>
+        <ul class="aw-list">
+          <li>🥦 Fruit & vegetable peels</li>
+          <li>🍳 Cooked food leftovers</li>
+          <li>🌿 Garden / plant waste</li>
+          <li>☕ Tea bags, coffee grounds</li>
+          <li>🥚 Eggshells</li>
+        </ul>
+        <div class="aw-tip">💡 Use <strong>green bins</strong> for wet waste.</div>
+      </div>
+      <div class="awareness-card dry-card">
+        <div class="aw-emoji">📦</div>
+        <h3>Dry Waste</h3>
+        <p class="aw-desc">Non-biodegradable waste that can often be recycled.</p>
+        <ul class="aw-list">
+          <li>📰 Paper, cardboard, newspapers</li>
+          <li>🍾 Plastic bottles & containers</li>
+          <li>🥫 Metal cans & tins</li>
+          <li>🪟 Glass bottles & jars</li>
+          <li>👗 Cloth & fabric scraps</li>
+        </ul>
+        <div class="aw-tip">💡 Use <strong>blue bins</strong> for dry waste.</div>
+      </div>
+      <div class="awareness-card hazard-card">
+        <div class="aw-emoji">☣️</div>
+        <h3>Hazardous Waste</h3>
+        <p class="aw-desc">Waste requiring special disposal. Never mix with regular bins.</p>
+        <ul class="aw-list">
+          <li>🔋 Batteries & electronics</li>
+          <li>💊 Expired medicines</li>
+          <li>🎨 Paints, chemicals</li>
+          <li>💡 Bulbs & tube lights</li>
+          <li>🧴 Aerosol cans</li>
+        </ul>
+        <div class="aw-tip">💡 Use <strong>red bins</strong> for hazardous waste.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DASHBOARD ===== -->
+<section class="section dashboard-section" id="dashboard">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Live Dashboard</span>
+      <h2>City Waste <span class="accent">At a Glance</span></h2>
+      <p>Real-time overview of waste management operations across the city.</p>
+    </div>
+    <div class="dashboard-grid">
+      <div class="stat-card" data-target="0" data-id="totalReported">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" id="statReported">0</div>
+        <div class="stat-label">Issues Reported</div>
+        <div class="stat-trend up">↑ Live</div>
+      </div>
+      <div class="stat-card" data-target="38" data-id="resolved">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="statResolved">0</div>
+        <div class="stat-label">Issues Resolved</div>
+        <div class="stat-trend up">↑ +5 today</div>
+      </div>
+      <div class="stat-card" data-target="142" data-id="bins">
+        <div class="stat-icon">🗑️</div>
+        <div class="stat-value" id="statBins">0</div>
+        <div class="stat-label">Bins Monitored</div>
+        <div class="stat-trend">Across 6 zones</div>
+      </div>
+      <div class="stat-card" data-target="98" data-id="rate">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value" id="statRate">0<span class="pct">%</span></div>
+        <div class="stat-label">Pickup Success Rate</div>
+        <div class="stat-trend up">↑ Above average</div>
+      </div>
+    </div>
+
+    <div class="activity-section">
+      <h3 class="activity-title">Recent Activity</h3>
+      <div class="activity-list" id="activityList">
+        <div class="activity-item">
+          <span class="act-dot green"></span>
+          <span class="act-text">Bin overflow resolved – Pimpri Sector 4</span>
+          <span class="act-time">2 hrs ago</span>
+        </div>
+        <div class="activity-item">
+          <span class="act-dot orange"></span>
+          <span class="act-text">Missed pickup reported – Chinchwad MG Road</span>
+          <span class="act-time">4 hrs ago</span>
+        </div>
+        <div class="activity-item">
+          <span class="act-dot green"></span>
+          <span class="act-text">Scheduled pickup completed – Akurdi Zone C</span>
+          <span class="act-time">6 hrs ago</span>
+        </div>
+        <div class="activity-item">
+          <span class="act-dot blue"></span>
+          <span class="act-text">New truck deployed – Nigdi Zone D</span>
+          <span class="act-time">8 hrs ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <div class="nav-logo" style="margin-bottom:0.5rem">🌿 EcoSmart</div>
+        <p class="footer-tagline">Making Pune cleaner, one bin at a time.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#report">Report</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#awareness">Awareness</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EcoSmart Pune. Built with 💚 for a cleaner tomorrow.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
