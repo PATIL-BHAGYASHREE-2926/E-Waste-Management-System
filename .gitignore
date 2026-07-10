@@ -1,6 +1,15 @@
 __pycache__/
 *.pyc
-.vscode/
+
 .env
+
 venv/
+.venv/
+
 uploads/
+
+.vscode/
+
+.idea/
+
+*.db

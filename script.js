@@ -4,6 +4,34 @@
 
 const API_BASE = 'http://localhost:5000';
 
+const gpsBtn = document.getElementById("gpsBtn");
+
+gpsBtn.addEventListener("click", () => {
+
+    if(!navigator.geolocation){
+      alert("GPS not supported.");
+      return;
+    }
+
+    gpsBtn.innerHTML="📡 Getting Location...";
+    navigator.geolocation.getCurrentPosition(
+    (position)=>{
+      document.getElementById("latitude").value=
+      position.coords.latitude;
+
+      document.getElementById("longitude").value=
+      position.coords.longitude;
+
+      gpsBtn.innerHTML="✅ Location Captured";
+    },
+
+    ()=>{
+      alert("Unable to get location");
+      gpsBtn.innerHTML="📍 Use Current Location";
+    }
+    );
+});
+
 /* ===== DARK MODE TOGGLE ===== */
 const darkToggle = document.getElementById('darkToggle');
 const html = document.documentElement;
@@ -140,32 +168,62 @@ reportForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   clearErrors();
 
+
   const data = {
-    name:        document.getElementById('name').value,
-    location:    document.getElementById('location').value,
-    issue_type:  document.getElementById('issueType').value,
-    description: document.getElementById('description').value,
+      name: document.getElementById("name").value,
+      location: document.getElementById("location").value,
+      issue_type: document.getElementById("issueType").value,
+       description: document.getElementById("description").value
   };
 
   if (!validateForm(data)) return;
 
+  
   // Loading state
   btnText.classList.add('hidden');
   btnLoader.classList.remove('hidden');
   submitBtn.disabled = true;
 
   try {
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("location", data.location);
+    formData.append("issue_type", data.issue_type);
+    formData.append("description", data.description);
+    formData.append(
+    "latitude",
+    document.getElementById("latitude").value
+    );
+
+    formData.append(
+    "longitude",
+    document.getElementById("longitude").value
+    );
+
+    const image = document.getElementById("image").files[0];
+
+    if (image) {
+        formData.append("image", image);
+    }
+
     const res = await fetch(`${API_BASE}/report`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+        method: "POST",
+        body: formData
     });
 
-    const result = await res.json();
+    const result = await res.json();  
 
     if (res.ok) {
       reportForm.reset();
+
+      document.getElementById("latitude").value = "";
+      document.getElementById("longitude").value = "";
+
+      gpsBtn.innerHTML = "📍 Use Current Location";
+
       showPopup(result.issue_id);
+
       // Add to activity list
       addActivity(data);
     } else {
@@ -173,9 +231,16 @@ reportForm.addEventListener('submit', async (e) => {
     }
   } catch (err) {
     // Flask not running – simulate success for demo
+
     reportForm.reset();
+
+    document.getElementById("latitude").value = "";
+    document.getElementById("longitude").value = "";
+    gpsBtn.innerHTML = "📍 Use Current Location";
+
     showPopup('DEMO-' + Math.floor(Math.random() * 9000 + 1000));
     addActivity(data);
+    
     console.warn('Flask not reachable, running in demo mode.');
   } finally {
     btnText.classList.remove('hidden');
@@ -243,3 +308,6 @@ window.addEventListener('scroll', () => {
       : '';
   });
 });
+
+
+

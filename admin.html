@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart Admin Panel</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        
+        <h1>🌿 EcoSmart Admin Panel</h1>
+
+        <div class="dashboard-grid">
+
+            <div class="stat-card">
+                <h3>Total Reports</h3>
+                <h2 id="totalReports">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <h2 id="pendingReports">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Resolved</h3>
+                <h2 id="resolvedReports">0</h2>
+            </div>
+        </div>
+
+          <h2 class="section-title">📊 Report Analytics</h2>
+
+            <div class="chart-container">
+
+                <div class="chart-card">
+                
+                <canvas id="statusChart"></canvas>
+
+                </div>
+
+                <div class="chart-card">
+
+                <canvas id="issueChart"></canvas>
+
+                </div>
+
+                </div>
+
+        <h2 class="section-title">📋 Reported Issues</h2>
+        <div class="toolbar">
+
+        <input
+            type="text"
+            id="searchInput"
+            class="search-box"
+            placeholder="🔍 Search reports...">
+
+        <select
+            id="statusFilter"
+            class="filter-box">
+
+            <option value="All">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Resolved">Resolved</option>
+            <option value="In Progress">In Progress</option>
+
+        </select>
+
+        <button id="exportBtn" class="export-btn">
+            📄 Export PDF
+        </button>
+
+    </div>
+    
+        <table id="reportsTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Issue</th>
+                <th>Image</th>
+                <th>GPS</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody id="reportBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    
+<script src="admin.js"></script>
+</body>
+</html>

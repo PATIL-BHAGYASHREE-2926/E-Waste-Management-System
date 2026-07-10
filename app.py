@@ -2,10 +2,23 @@ from db import get_db_connection
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
 import os
+
 
 app = Flask(__name__, static_folder='.')
 CORS(app)
+
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 # In-memory storage for reported issues
 issues = []
@@ -28,42 +41,67 @@ def serve_static(filename):
 
 @app.route('/report', methods=['POST'])
 def report_issue():
-    data = request.get_json()
+
+    data = request.form
+    print("Received:", data)
 
     if not data:
-        return jsonify({"error": "No data provided"}), 400
+        return jsonify({"error": "No data"}), 400
 
     name = data.get('name', '').strip()
     location = data.get('location', '').strip()
     issue_type = data.get('issue_type', '').strip()
     description = data.get('description', '').strip()
+    latitude=data.get("latitude")
+    longitude=data.get("longitude")
+    image = request.files.get("image")
+    image_filename = None
 
-    if not name or not location or not issue_type:
-        return jsonify({"error": "Name, location, and issue type are required"}), 400
+    if image and image.filename != "":
+        image_filename = secure_filename(image.filename)
 
+        image.save(
+            os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                image_filename
+            )
+        )
+
+    print(name, location, issue_type, description)
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
+    print("Connected to DB")
+
     cursor.execute("""
     INSERT INTO reports
-    (name, location, issue_type, description)
-    VALUES (%s, %s, %s, %s)
-    """, (name, location, issue_type, description))
+    (
+    name,
+    location,
+    issue_type,
+    description,
+    image,
+    latitude,
+    longitude
+    )
+    VALUES(%s,%s,%s,%s,%s,%s,%s)
+    """,
+    (name, location, issue_type, description, image_filename,latitude,longitude))
 
     conn.commit()
+
+    print("Inserted Successfully!")
 
     issue_id = cursor.lastrowid
 
     cursor.close()
     conn.close()
 
-
     return jsonify({
-        "message": "Issue reported successfully",
-        "issue_id": issue_id,
-        "status": "Pending"
-    }), 201
+        "message":"Success",
+        "issue_id":issue_id
+    }),201
 
 @app.route('/stats', methods=['GET'])
 def get_stats():
@@ -89,6 +127,38 @@ def get_stats():
         "bins_monitored": 142
     })
 
+@app.route('/chart-data')
+def chart_data():
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Status counts
+    cursor.execute("""
+        SELECT status, COUNT(*) AS total
+        FROM reports
+        GROUP BY status
+    """)
+
+    status_data = cursor.fetchall()
+
+    # Issue counts
+    cursor.execute("""
+        SELECT issue_type, COUNT(*) AS total
+        FROM reports
+        GROUP BY issue_type
+    """)
+
+    issue_data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        "status": status_data,
+        "issues": issue_data
+    })
+
 @app.route('/issues', methods=['GET'])
 def get_issues():
     conn = get_db_connection()
@@ -103,17 +173,56 @@ def get_issues():
 
     return jsonify(reports)
 
+
+@app.route('/report/<int:report_id>', methods=['PUT'])
+def update_report(report_id):
+
+    data = request.get_json()
+
+    status = data.get("status")
+
+    if not status:
+        return jsonify({"error": "Status is required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE reports SET status=%s WHERE id=%s",
+        (status, report_id)
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        "message": "Report updated successfully"
+    })
+
+
+@app.route('/report/<int:report_id>', methods=['DELETE'])
+def delete_report(report_id):
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM reports WHERE id=%s",
+        (report_id,)
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        "message": "Report deleted successfully"
+    })
+
+
 if __name__ == '__main__':
     print("🌱 Smart Waste Management System running at http://localhost:5000")
     app.run(debug=True, port=5000)
-
-
-
-@app.route('/testdb')
-def test_db():
-    try:
-        conn = get_db_connection()
-        conn.close()
-        return "Database Connected Successfully!"
-    except Exception as e:
-        return f"Connection Failed: {e}"
