@@ -310,4 +310,5 @@ window.addEventListener('scroll', () => {
 });
 
 
-
+document.getElementById("copyright").innerHTML =
+    `© ${new Date().getFullYear()} EcoSmart. Built with 💚 for a cleaner tomorrow.`;

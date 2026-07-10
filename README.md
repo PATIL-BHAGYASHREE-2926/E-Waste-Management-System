@@ -1,6 +1,13 @@
 # 🌍 EcoSmart - Smart Waste Management System
 
-A modern Smart Waste Management System built using **Flask, MySQL, HTML, CSS, and JavaScript**. The application allows users to report waste-related issues while providing an admin dashboard to efficiently manage and monitor reports.
+A modern full-stack Smart Waste Management System built using **Flask, MySQL, HTML, CSS, and JavaScript**. The application enables citizens to report waste-related issues with image uploads and location details while providing administrators with a dashboard to monitor, manage, and analyze reports efficiently.
+
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-Web%20Framework-black?logo=flask)
+![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql)
+![HTML5](https://img.shields.io/badge/HTML5-orange?logo=html5)
+![CSS3](https://img.shields.io/badge/CSS3-blue?logo=css3)
+![JavaScript](https://img.shields.io/badge/JavaScript-yellow?logo=javascript)
 
 ---
 
@@ -101,28 +108,57 @@ http://localhost:5000
 
 ## 📸 Screenshots
 
-(Add screenshots here)
+### 🏠 Home Page
+
+![Home](screenshots/home.png)
+
+### 📝 Report Issue
+
+![Report Form](screenshots/report-form.png)
+
+### 📅 Collection Schedule
+
+![Schedule](screenshots/schedule.png)
+
+### ♻️ Waste Awareness
+
+![Awareness](screenshots/awareness.png)
+
+
+### 👨‍💻 Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### 📊 Dashboard
+
+![Dashboard](screenshots/dashboard.png)
 
 ---
 
 ## 🎯 Future Improvements
 
-- 📍 GPS Integration
-- 📧 Email Notifications
 - ☁️ Cloud Deployment
-- 🤖 AI Waste Detection
+- 📧 Email Notifications
+- 🤖 AI-based Waste Classification
 - 📱 Mobile Application
+- 📍 Live Truck Tracking
+- 🔔 Push Notifications
+
 
 ---
-
 ## 👩‍💻 Developer
 
 **Bhagyashree Patil**
 
 Computer Engineering Student
-
+Aspiring Full Stack & Cyber Security Engineer
 ---
 
 ## ⭐ If you like this project
 
 Give this repository a ⭐ on GitHub!
+
+
+
+
+
